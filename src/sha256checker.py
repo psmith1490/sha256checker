@@ -1,6 +1,6 @@
-import hashlib 
 import argparse
-
+import hashlib 
+import sys
 
 def sha256(filename: str) -> str:
         result = ''
@@ -27,17 +27,30 @@ def main():
         parser.add_argument('-f', '--expected_file', help="check hash of file with hash string stored in expected_file")
         args = parser.parse_args()
 
-        file_digest = sha256(args.file_path)
+        try:
+                file_digest = sha256(args.file_path)
+        except FileNotFoundError:
+                print("Error: '" + str(args.file_path) +"', file not found.")
+                sys.exit()
         verdict = "Equal"
         comp_hash = ""
 
-        if (args.string is not None) and (args.expected_file is not None):
-                print(file_digest)
+        if (args.expected_file is not None) and  (args.string is not None):
+                print("Too many arguments.\n")
+                parser.print_help()
+                sys.exit()
         elif args.expected_file is not None:
-                comp_hash = readHashFile(str(args.expected_file))
+                try:
+                        comp_hash = readHashFile(str(args.expected_file))
+                except FileNotFoundError:
+                        print("Error: '" + str(args.expected_file) +"', file not found.")
+                        sys.exit()
                 print("file: " + args.file_path + ", \nsha256: " + file_digest + "\n\nchecked against: " + str(args.expected_file) + ",\nsha256: " + comp_hash)               
         elif args.string is not None:
                 comp_hash = args.string
+        else:
+                print(file_digest)
+
 
         if comp_hash != file_digest:
                 verdict = "Not " + verdict
