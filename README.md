@@ -11,3 +11,12 @@ Computes the sha256 digest of a specified file and compares with another sha256 
 `python3 sha256checker ../files/pic.webp -f pic.hash`
 
 ## Expected output: 
+```
+file: ../files/pic.webp,
+sha256: 16c810ac2614c7e663bbd23a2fc19c035d4b10cbdebd90a487aeff0dd1f52b9b
+
+checked against: ../files/pic.hash,
+sha256: 16c810ac2614c7e663bbd23a2fc19c035d4b10cbdebd90a487aeff0dd1f52b9b
+
+Equal
+```
